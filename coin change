@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int minCoinUsingMem(vector<int> &coins, int amount, vector<int> &dp) {
+        if (amount <= 0) {
+            return 0;
+        }
+        if (dp[amount] != -1) {
+            return dp[amount];
+        }
+
+        int finalAns = INT_MAX;
+        for (int i = 0; i < coins.size(); i++) {
+            int coin = coins[i];
+            if (coin <= amount) {
+                int recAns = minCoinUsingMem(coins, amount - coin, dp);
+
+                if (recAns != INT_MAX) {
+                    recAns += 1;
+                    finalAns = min(finalAns, recAns);
+                }
+            }
+        }
+        dp[amount] = finalAns;
+        return dp[amount];
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount + 1, -1);
+        int ans = minCoinUsingMem(coins, amount, dp);
+        if (ans == INT_MAX) {
+            return -1;
+        }
+        return ans;
+    }
+};
