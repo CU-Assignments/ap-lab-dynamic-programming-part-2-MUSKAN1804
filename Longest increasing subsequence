@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int LISRec(vector<int> &nums, int prev, int curr) {
+        if (curr >= nums.size()) {
+            return 0;
+        }
+
+        int include = 0;
+        if (prev == -1 || nums[prev] < nums[curr]) {
+            include = 1 + LISRec(nums, curr, curr + 1);
+        }
+        int exclude = LISRec(nums, prev, curr + 1);
+        return max(include, exclude);
+    }
+
+    int lengthOfLIS(vector<int>& nums) {
+        int prev = -1;
+        int curr = 0;
+        return LISRec(nums, prev, curr);
+    }
+};
